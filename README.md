@@ -28,12 +28,24 @@ O sistema foi projetado para uso interno das equipes de **RH** e **DP**, além d
 
 Abaixo estão os principais painéis da interface do sistema:
 
+### 🔍 Painel de Filtros
 ![Painel de Filtros](assets/PAINEL_FILTROS.png)
+
+### 📊 Dashboard
 ![Dashboard](assets/PAINEL_DASH.png)
+
+### 🗓️ Novo Agendamento
 ![Novo Agendamento](assets/PAINEL_NV_AGENDAMENTO.png)
+
+### ✏️ Editar Agendamentos
 ![Editar Agendamentos](assets/PAINEL_EDITAR_AGENDAMENTOS.png)
+
+### 🗑️ Excluir Agendamentos
 ![Excluir Agendamentos](assets/PAINEL_EXCLUIR_AGENDAMENTOS.png)
+
+### 📬 Contato com o Desenvolvedor
 ![Contato com o Desenvolvedor](assets/PAINEL_CONTATO_DESENVOLVEDOR.png)
+
 
 ---
 
