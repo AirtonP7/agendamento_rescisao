@@ -1,4 +1,4 @@
-# 📋 Sistema de Controle de Rescisões — DH | GrupoMax
+# 📋 Sistema de Controle de Rescisões
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python)
 ![Streamlit](https://img.shields.io/badge/Streamlit-app-red?logo=streamlit)
