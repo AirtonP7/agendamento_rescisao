@@ -1,0 +1,7 @@
+[theme]
+base = "dark"
+primaryColor = "#1DB954"          # verde elegante para botões e destaques
+backgroundColor = "#0E1117"       # fundo principal (dark neutro)
+secondaryBackgroundColor = "#1C1F26" # fundo da sidebar e caixas
+textColor = "#FFFFFF"             # cor do texto
+font = "sans serif"
