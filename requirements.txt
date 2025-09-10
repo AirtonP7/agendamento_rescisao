@@ -1,0 +1,17 @@
+# Core
+python-dotenv
+firebase-admin
+streamlit
+pandas
+numpy
+
+# Visualização e dashboards
+plotly
+
+# Exportação de arquivos
+reportlab
+openpyxl
+xlsxwriter
+
+# Utilidades
+requests

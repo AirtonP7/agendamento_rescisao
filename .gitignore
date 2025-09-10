@@ -1,0 +1,38 @@
+# Ambiente Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+
+# Virtualenv
+.env
+.env.*
+.env/
+.venv/
+venv/
+ENV/
+
+# Configurações locais
+config/serviceAccountKey.json
+*.sqlite3
+
+# Arquivos temporários
+*.log
+*.tmp
+*.bak
+
+# Streamlit cache
+.streamlit/
+**/.streamlit/
+
+# Jupyter Notebooks checkpoints (se usar)
+.ipynb_checkpoints/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# VSCode / IDE
+.vscode/
+.idea/
