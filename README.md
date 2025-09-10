@@ -7,6 +7,7 @@
 ![Último commit](https://img.shields.io/github/last-commit/AirtonP7/agendamento_rescisao)
 
 
+
 Aplicação web para gerenciamento de **agendamentos de rescisões**, desenvolvida em **Python + Streamlit**, integrada ao **Firebase** para persistência de dados.  
 O sistema foi projetado para uso interno das equipes de **RH** e **DP**, além de gestores da área.
 
@@ -39,42 +40,43 @@ Abaixo estão os principais painéis da interface do sistema:
 
 ## 🏗️ Estrutura do Projeto
 
+```text
 agendamento_rescisao/
 │
-├── app.py # Arquivo principal (entrada da aplicação)
-├── requirements.txt # Dependências
-├── .env.example # Exemplo de variáveis de ambiente
-├── .streamlit/ # Configurações do tema
-│ └── config.toml
+├── app.py                      # Arquivo principal (entrada da aplicação)
+├── requirements.txt            # Dependências
+├── env_example.txt             # Exemplo de variáveis de ambiente (renomear para .env)
+├── .streamlit/                 # Configurações do tema
+│   └── config.toml
 │
-├── assets/ # Logos, CSS e ícones
-│ ├── dh.png
-│ ├── logo.png
-│ └── styles.css
+├── assets/                     # Logos, CSS e ícones
+│   ├── dh.png
+│   ├── logo.png
+│   └── styles.css
 │
-├── config/ # Configurações e credenciais
-│ ├── firebase_config.py
-│ ├── serviceAccountKey.json (IGNORADO no git)
-│ └── settings.py
+├── config/                     # Configurações e credenciais
+│   ├── firebase_config.py
+│   ├── serviceAccountKey.json  # (IGNORADO no git)
+│   └── settings.py
 │
-├── data/ # Camada de acesso a dados
-│ ├── database.py
-│ └── queries.py
+├── data/                       # Camada de acesso a dados
+│   ├── database.py
+│   └── queries.py
 │
-├── utils/ # Funções auxiliares
-│ └── email_utils.py
+├── utils/                      # Funções auxiliares
+│   └── email_utils.py
 │
-├── views/ # Telas / funcionalidades
-│ ├── cadastro.py
-│ ├── dashboard.py
-│ ├── editar_agendamento.py
-│ ├── excluir_agendamento.py
-│ ├── gerar_pdf.py
-│ ├── relatorios.py
-│ └── visualizar_agendamentos.py
+├── views/                      # Telas / funcionalidades
+│   ├── cadastro.py
+│   ├── dashboard.py
+│   ├── editar_agendamento.py
+│   ├── excluir_agendamento.py
+│   ├── gerar_pdf.py
+│   ├── relatorios.py
+│   └── visualizar_agendamentos.py
 │
-└── falar_desenvolvedor/ # Tela de contato/feedback
-└── contato_dev.py
+└── falar_desenvolvedor/        # Tela de contato/feedback
+    └── contato_dev.py
 
 ---
 
