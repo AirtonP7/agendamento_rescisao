@@ -123,7 +123,7 @@ elif menu == "👨🏽‍💻 Falar com Desenvolvedor":
 st.sidebar.markdown("---", unsafe_allow_html=True)
 
 st.sidebar.markdown("""
-    <div style="text-align: center; margin-top: 40px; color: #aaa;">
+    <div style="text-align: center; margin-top: 10px; color: #aaa;">
         <div style="font-size:16px; font-weight:bold;">v1.0.0</div>
         <div style="font-size:17px;">Airton Pereira © 2025</div>
     </div>
