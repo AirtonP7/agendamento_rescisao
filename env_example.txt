@@ -1,0 +1,11 @@
+# Firebase
+FIREBASE_CREDENTIALS=config/SUA_CHAVE_FIREBASE_AQUI.json
+
+# Regras do sistema
+MAX_AGENDAMENTOS_DIA=5
+
+# Configuração de e-mail
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+EMAIL_ORIGEM=seu_email@gmail.com
+EMAIL_PASSWORD=sua_senha_aqui
