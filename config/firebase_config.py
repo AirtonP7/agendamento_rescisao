@@ -8,22 +8,27 @@ def init_firebase():
     """
     Inicializa a conexão com o Firebase.
     - Ambiente local: usa o arquivo serviceAccountKey.json
-    - Produção: usa variável de ambiente FIREBASE_CREDENTIALS_JSON
+    - Produção (Render/Deploy): usa variável de ambiente FIREBASE_CREDENTIALS_JSON
     """
     if not firebase_admin._apps:
-        # Tenta ler a variável de ambiente para produção
         creds_json = os.getenv("FIREBASE_CREDENTIALS_JSON")
 
         if creds_json:
-            print("DEBUG | Usando Firebase via variável de ambiente JSON")
-            cred = credentials.Certificate(json.loads(creds_json))
+            try:
+                cred_dict = json.loads(creds_json)
+                cred = credentials.Certificate(cred_dict)
+                print("DEBUG | Firebase inicializado com variável de ambiente JSON")
+            except json.JSONDecodeError as e:
+                raise ValueError("Erro ao decodificar JSON do FIREBASE_CREDENTIALS_JSON") from e
+
         elif FIREBASE_CREDENTIALS and os.path.exists(FIREBASE_CREDENTIALS):
-            print("DEBUG | Usando Firebase via arquivo local")
             cred = credentials.Certificate(FIREBASE_CREDENTIALS)
+            print("DEBUG | Firebase inicializado com arquivo local")
+
         else:
             raise ValueError(
-                "Não foi possível encontrar credenciais do Firebase. "
-                "Verifique o arquivo FIREBASE_CREDENTIALS ou a variável FIREBASE_CREDENTIALS_JSON."
+                "Credenciais do Firebase não encontradas. "
+                "Configure a variável FIREBASE_CREDENTIALS_JSON no Render ou o arquivo local."
             )
 
         firebase_admin.initialize_app(cred)
