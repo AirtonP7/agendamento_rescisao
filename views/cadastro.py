@@ -28,7 +28,8 @@ def cadastrar_agendamento():
             [" ", "Sindicato Fortaleza", "Sindicato Caucaia", "Não"]
         )
 
-        data_demissao = st.date_input("📆 Data da Demissão", min_value=date.today())
+        #data_demissao = st.date_input("📆 Data da Demissão", min_value=date.today()) CASO QUEIRA QUE A DATA SEJA LIMITADA A DATA ATUAL.
+        data_demissao = st.date_input("📆 Data da Demissão")
         data_limite = data_demissao + timedelta(days=10)
 
         st.info(f"⚠️ Data limite para agendamento: **{data_limite.strftime('%d/%m/%Y')}**")
@@ -46,7 +47,7 @@ def cadastrar_agendamento():
             [
                 " ", "Sargento", "Mister Hull", "Jurema", "Mondubim", "Pecem",
                 "Metropole", "Caucaia", "Canindé", "Pindoretama",
-                "Icaraí", "Novo Metropole", "CD"
+                "Icaraí", "Novo Metropole", "Escritorio", "Operação", "CD"
             ]
         )
 

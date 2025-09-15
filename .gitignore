@@ -22,10 +22,6 @@ config/serviceAccountKey.json
 *.tmp
 *.bak
 
-# Streamlit cache
-.streamlit/
-**/.streamlit/
-
 # Jupyter Notebooks checkpoints (se usar)
 .ipynb_checkpoints/
 
