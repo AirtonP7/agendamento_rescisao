@@ -125,11 +125,7 @@ def tela_dash():
     hoje = date.today()
 
     agendamentos = listar_agendamentos()
-    if not agendamentos:
-        st.info("Nenhum agendamento encontrado.")
-        return
-
-    df = pd.DataFrame(agendamentos)
+    df = pd.DataFrame(agendamentos) if agendamentos else pd.DataFrame()
 
     # Ajustar datas
     for col in ["data_agendamento", "data_demissao", "data_limite"]:
@@ -148,44 +144,52 @@ def tela_dash():
     with col4:
         sindicatos = st.multiselect(
             "Sindicato",
-            df["sindicato"].dropna().unique().tolist(),
-            default=df["sindicato"].dropna().unique().tolist(),
+            df["sindicato"].dropna().unique().tolist() if not df.empty else [],
+            default=df["sindicato"].dropna().unique().tolist() if not df.empty else [],
         )
     with col5:
         lojas = st.multiselect(
             "Loja",
-            df["loja"].dropna().unique().tolist(),
-            default=df["loja"].dropna().unique().tolist(),
+            df["loja"].dropna().unique().tolist() if not df.empty else [],
+            default=df["loja"].dropna().unique().tolist() if not df.empty else [],
         )
 
     col6, col7 = st.columns([2, 2])
     with col6:
         status = st.multiselect(
             "Status",
-            df["status"].dropna().unique().tolist(),
-            default=df["status"].dropna().unique().tolist(),
+            df["status"].dropna().unique().tolist() if not df.empty else [],
+            default=df["status"].dropna().unique().tolist() if not df.empty else [],
         )
     with col7:
         responsaveis = st.multiselect(
             "Responsável",
-            df["responsavel"].dropna().unique().tolist(),
-            default=df["responsavel"].dropna().unique().tolist(),
+            df["responsavel"].dropna().unique().tolist() if not df.empty else [],
+            default=df["responsavel"].dropna().unique().tolist() if not df.empty else [],
         )
 
-    # Aplicar filtros
-    df_filtrado = df[
-        (df["data_agendamento"] >= pd.to_datetime(data_inicio))
-        & (df["data_agendamento"] <= pd.to_datetime(data_fim))
-        & (df["sindicato"].isin(sindicatos))
-        & (df["loja"].isin(lojas))
-        & (df["responsavel"].isin(responsaveis))
-        & (df["status"].isin(status))
-    ]
+    # ------------------- APLICA FILTROS -------------------
+    if not df.empty:
+        df_filtrado = df[
+            (df["data_agendamento"] >= pd.to_datetime(data_inicio))
+            & (df["data_agendamento"] <= pd.to_datetime(data_fim))
+            & (df["sindicato"].isin(sindicatos))
+            & (df["loja"].isin(lojas))
+            & (df["responsavel"].isin(responsaveis))
+            & (df["status"].isin(status))
+        ]
 
-    if nome:
-        df_filtrado = df_filtrado[df_filtrado["nome"].str.contains(nome, case=False, na=False)]
+        if nome:
+            df_filtrado = df_filtrado[df_filtrado["nome"].str.contains(nome, case=False, na=False)]
+    else:
+        df_filtrado = pd.DataFrame()
 
     st.markdown("---")
+
+    # ------------------- RESULTADOS -------------------
+    if df_filtrado.empty:
+        st.warning("⚠️ Nenhum agendamento encontrado para os filtros aplicados.")
+        return
 
     # ------------------- RELATÓRIO TABELADO -------------------
     st.subheader("📑 Relatório Tabelado | Agendamentos Filtrados")
@@ -194,7 +198,6 @@ def tela_dash():
     col2.metric("Lojas Atendidas", df_filtrado["loja"].nunique())
     col3.metric("Responsáveis", df_filtrado["responsavel"].nunique())
 
-    # Forçar ordem das colunas
     colunas_ordem = [
         "criado_em",
         "data_agendamento",
@@ -211,7 +214,6 @@ def tela_dash():
         [col for col in colunas_ordem if col in df_filtrado.columns]
     ].copy()
 
-    # Formatando datas para dd/mm/aaaa
     for col in ["data_agendamento", "data_demissao", "data_limite"]:
         if col in df_filtrado_display.columns:
             df_filtrado_display[col] = df_filtrado_display[col].dt.strftime("%d/%m/%Y")
@@ -240,7 +242,6 @@ def tela_dash():
     # ------------------- GRÁFICOS -------------------
     st.subheader("📊 Painel | Dashboards")
 
-    # Agendamentos por Dia
     contagem_datas = df_filtrado["data_agendamento"].dt.date.value_counts().sort_index()
     if not contagem_datas.empty:
         fig1 = px.bar(
@@ -250,10 +251,9 @@ def tela_dash():
             title="Agendamentos por Dia",
             text=contagem_datas.values,
         )
-        fig1.update_traces(textfont_size=20)  # <<< aumenta fonte dos rótulos
+        fig1.update_traces(textfont_size=20)
         st.plotly_chart(fig1, use_container_width=True)
 
-    # Demissões por Loja
     contagem_lojas = df_filtrado["loja"].value_counts()
     if not contagem_lojas.empty:
         fig2 = px.pie(
@@ -262,10 +262,9 @@ def tela_dash():
             title="Demissões por Loja",
             hole=0.3,
         )
-        fig2.update_traces(textinfo="value", textfont_size=20)  # <<< rótulo maior
+        fig2.update_traces(textinfo="value", textfont_size=20)
         st.plotly_chart(fig2, use_container_width=True)
 
-    # Atendimentos por Responsável
     contagem_resp = df_filtrado["responsavel"].value_counts()
     if not contagem_resp.empty:
         fig3 = px.bar(
@@ -275,10 +274,9 @@ def tela_dash():
             title="Atendimentos por Responsável",
             text=contagem_resp.values,
         )
-        fig3.update_traces(textfont_size=20)  # <<< rótulo maior
+        fig3.update_traces(textfont_size=20)
         st.plotly_chart(fig3, use_container_width=True)
 
-    # Status (Pendente vs Atendido)
     contagem_status = df_filtrado["status"].value_counts()
     if not contagem_status.empty:
         fig4 = px.pie(
@@ -286,8 +284,9 @@ def tela_dash():
             values=contagem_status.values,
             title="Agendamentos por Status",
         )
-        fig4.update_traces(textinfo="value", textfont_size=20)  # <<< rótulo maior
+        fig4.update_traces(textinfo="value", textfont_size=20)
         st.plotly_chart(fig4, use_container_width=True)
+
 
 
 

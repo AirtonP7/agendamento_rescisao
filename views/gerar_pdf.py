@@ -74,7 +74,7 @@ def gerar_pdf(df, data_inicio, data_fim):
         elementos.append(Spacer(1, 12))
 
     # --- Rodapé ---
-    rodape = Paragraph("Sistema de Agendamento - Relatório Gerado Automaticamente", styles["Italic"])
+    rodape = Paragraph("Sistema de Agendamento - Copyright © Airton Pereira 2025.", styles["Italic"])
     elementos.append(rodape)
 
     doc.build(elementos)

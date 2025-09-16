@@ -90,7 +90,7 @@ def exportar_pdf(df, data_inicio, data_fim):
     ]))
     elementos.append(tabela)
     elementos.append(Spacer(1, 20))
-    elementos.append(Paragraph("Sistema de Agendamento - Relatório Gerado Automaticamente", styles["Italic"]))
+    elementos.append(Paragraph("Sistema de Agendamento - Copyright © Airton Pereira 2025.", styles["Italic"]))
 
     doc.build(elementos)
     buffer.seek(0)
@@ -104,7 +104,14 @@ def visualizar_agendamentos():
     col1, col2 = st.columns(2)
     with col1:
         nome = st.text_input("Nome do colaborador")
-        loja = st.selectbox("Loja", ["Todas","Sargento","Mister Hull","Jurema","Mondubim","Pecem","Metropole","Caucaia","Canindé","Pindoretama","Icaraí","Novo Metropole","CD"])
+        loja = st.selectbox(
+            "Loja",
+            [
+                "Todas", "Sargento", "Mister Hull", "Jurema", "Mondubim", "Pecem",
+                "Metropole", "Caucaia", "Canindé", "Pindoretama", "Icaraí",
+                "Novo Metropole", "Escritorio", "Operação", "CD"
+            ]
+        )
     with col2:
         responsavel = st.selectbox("Responsável", ["Todos"] + [])
         data_inicio = st.date_input("Data Início", value=date.today())
@@ -115,41 +122,60 @@ def visualizar_agendamentos():
 
     if df.empty:
         st.warning("⚠️ Nenhum agendamento encontrado para os filtros aplicados.")
-        return
+    else:
+        # Mostrar tabela
+        st.subheader("📋 Resultados")
+        df_display = df.copy()
+        for campo in ["data_agendamento", "data_demissao", "data_limite"]:
+            if campo in df_display.columns:
+                df_display[campo] = df_display[campo].dt.strftime("%d/%m/%Y")
+        st.dataframe(df_display, use_container_width=True)
 
-    # Mostrar tabela
-    st.subheader("📋 Resultados")
-    df_display = df.copy()
-    for campo in ["data_agendamento","data_demissao","data_limite"]:
-        if campo in df_display.columns:
-            df_display[campo] = df_display[campo].dt.strftime("%d/%m/%Y")
-    st.dataframe(df_display, use_container_width=True)
+        # Exportações
+        st.subheader("📂 Exportar Resultados")
+        col_exp1, col_exp2 = st.columns(2)
+        with col_exp1:
+            excel_data = exportar_excel(df_display)
+            st.download_button(
+                "⬇️ Exportar para Excel",
+                excel_data,
+                "agendamentos.xlsx",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+        with col_exp2:
+            pdf_data = exportar_pdf(df_display, data_inicio, data_fim)
+            st.download_button(
+                "⬇️ Exportar para PDF",
+                pdf_data,
+                f"agendamentos_{data_inicio}_{data_fim}.pdf",
+                "application/pdf",
+            )
 
-    # Exportações
-    st.subheader("📂 Exportar Resultados")
-    col_exp1, col_exp2 = st.columns(2)
-    with col_exp1:
-        excel_data = exportar_excel(df_display)
-        st.download_button("⬇️ Exportar para Excel", excel_data, "agendamentos.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    with col_exp2:
-        pdf_data = exportar_pdf(df_display, data_inicio, data_fim)
-        st.download_button("⬇️ Exportar para PDF", pdf_data, f"agendamentos_{data_inicio}_{data_fim}.pdf", "application/pdf")
+        # Gráficos
+        st.subheader("📊 Gráficos")
+        contagem_datas = df["data_agendamento"].dt.date.value_counts().sort_index()
+        fig1 = px.bar(
+            x=contagem_datas.index, y=contagem_datas.values,
+            labels={"x": "Data", "y": "Quantidade"},
+            title="Agendamentos por Dia"
+        )
+        st.plotly_chart(fig1, use_container_width=True)
 
-    # Gráficos
-    st.subheader("📊 Gráficos")
-    contagem_datas = df["data_agendamento"].dt.date.value_counts().sort_index()
-    fig1 = px.bar(x=contagem_datas.index, y=contagem_datas.values,
-                  labels={"x":"Data","y":"Quantidade"}, title="Agendamentos por Dia")
-    st.plotly_chart(fig1, use_container_width=True)
+        contagem_lojas = df["loja"].value_counts()
+        fig2 = px.pie(
+            names=contagem_lojas.index, values=contagem_lojas.values,
+            title="Demissões por Loja"
+        )
+        st.plotly_chart(fig2, use_container_width=True)
 
-    contagem_lojas = df["loja"].value_counts()
-    fig2 = px.pie(names=contagem_lojas.index, values=contagem_lojas.values, title="Demissões por Loja")
-    st.plotly_chart(fig2, use_container_width=True)
+        contagem_resp = df["responsavel"].value_counts()
+        fig3 = px.bar(
+            x=contagem_resp.index, y=contagem_resp.values,
+            labels={"x": "Responsável", "y": "Quantidade"},
+            title="Atendimentos por Responsável"
+        )
+        st.plotly_chart(fig3, use_container_width=True)
 
-    contagem_resp = df["responsavel"].value_counts()
-    fig3 = px.bar(x=contagem_resp.index, y=contagem_resp.values,
-                  labels={"x":"Responsável","y":"Quantidade"}, title="Atendimentos por Responsável")
-    st.plotly_chart(fig3, use_container_width=True)
 
 if __name__ == "__main__":
     visualizar_agendamentos()

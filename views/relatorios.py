@@ -62,7 +62,7 @@ def gerar_pdf_tabelado(agendamentos, data_inicio, data_fim):
     elements.append(Spacer(1, 20))
 
     # Rodapé
-    rodape = Paragraph("Sistema de Agendamento - Relatório Gerado Automaticamente", styles["Italic"])
+    rodape = Paragraph("Sistema de Agendamento - Copyright © Airton Pereira 2025.", styles["Italic"])
     elements.append(rodape)
 
     doc.build(elements)
