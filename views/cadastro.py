@@ -24,7 +24,6 @@ def gerar_horarios_30min():
     return lista
 
 
-
 # --- função principal ---
 def cadastrar_agendamento():
     st.title("📅 Novo Agendamento de Rescisão")
@@ -86,9 +85,7 @@ def cadastrar_agendamento():
             key="sindicato",
         )
 
-        data_demissao = st.date_input(
-            "📆 Data da Demissão", key="data_demissao", value=st.session_state["data_demissao"]
-        )
+        data_demissao = st.date_input("📆 Data da Demissão", key="data_demissao")
 
         data_limite = data_demissao + timedelta(days=10)
         st.info(f"⚠️ Data limite para agendamento: **{data_limite.strftime('%d/%m/%Y')}**")
@@ -98,7 +95,7 @@ def cadastrar_agendamento():
             min_value=date.today(),
             max_value=data_limite,
             key="data_agendamento",
-            value=st.session_state["data_agendamento"],
+            #value=st.session_state["data_agendamento"],
         )
 
         # selectbox com horários válidos (garante múltiplos de 30min)
