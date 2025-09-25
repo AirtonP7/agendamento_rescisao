@@ -46,32 +46,6 @@ def gerar_pdf(df, data_inicio, data_fim):
     elementos.append(tabela)
     elementos.append(Spacer(1, 20))
 
-    # --- Gráficos ---
-    # Agendamentos por Dia
-    contagem_datas = df["data_agendamento"].dt.date.value_counts().sort_index()
-    if not contagem_datas.empty:
-        fig1 = px.bar(x=contagem_datas.index, y=contagem_datas.values,
-                      labels={"x": "Data", "y": "Quantidade"}, title="Agendamentos por Dia")
-        img_bytes = fig1.to_image(format="png")
-        elementos.append(Image(BytesIO(img_bytes), width=450, height=250))
-        elementos.append(Spacer(1, 12))
-
-    # Demissões por Loja
-    contagem_lojas = df["loja"].value_counts()
-    if not contagem_lojas.empty:
-        fig2 = px.pie(names=contagem_lojas.index, values=contagem_lojas.values, title="Demissões por Loja")
-        img_bytes = fig2.to_image(format="png")
-        elementos.append(Image(BytesIO(img_bytes), width=450, height=250))
-        elementos.append(Spacer(1, 12))
-
-    # Atendimentos por Responsável
-    contagem_resp = df["responsavel"].value_counts()
-    if not contagem_resp.empty:
-        fig3 = px.bar(x=contagem_resp.index, y=contagem_resp.values,
-                      labels={"x": "Responsável", "y": "Quantidade"}, title="Atendimentos por Responsável")
-        img_bytes = fig3.to_image(format="png")
-        elementos.append(Image(BytesIO(img_bytes), width=450, height=250))
-        elementos.append(Spacer(1, 12))
 
     # --- Rodapé ---
     rodape = Paragraph("Sistema de Agendamento - Copyright © Airton Pereira 2025.", styles["Italic"])

@@ -65,24 +65,23 @@ def gerar_pdf(df, data_inicio, data_fim):
 
     # --- Tabela principal ---
     colunas = [
-        "Criado Em", "Data Agendamento", "Hora Agendamento",
-        "Loja", "Nome", "Data Demissão", "Data Limite",
-        "Responsável", "Status", "Atualizado Em"
+        "Data Agendamento", "Hora Agendamento",
+        "Loja", "Nome", "Data Demissão", "Data Limite", "Sindicato", 
+        "Responsável", "Status"
     ]
 
     dados = [colunas]
     for _, row in df.iterrows():
         dados.append([
-            row.get("criado_em", ""),
             row.get("data_agendamento", ""),
             row.get("hora_agendamento", ""),
             row.get("loja", ""),
             row.get("nome", ""),
             row.get("data_demissao", ""),
             row.get("data_limite", ""),
+            row.get("sindicato", ""),
             row.get("responsavel", ""),
             row.get("status", ""),
-            row.get("atualizado_em", ""),
         ])
 
     tabela = Table(dados, repeatRows=1)
@@ -206,6 +205,7 @@ def tela_dash():
         "nome",
         "data_demissao",
         "data_limite",
+        "sindicato",
         "responsavel",
         "status",
         "atualizado_em",
