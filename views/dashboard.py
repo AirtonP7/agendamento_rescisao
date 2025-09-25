@@ -208,7 +208,6 @@ def tela_dash():
         "sindicato",
         "responsavel",
         "status",
-        "atualizado_em",
     ]
     df_filtrado_display = df_filtrado[
         [col for col in colunas_ordem if col in df_filtrado.columns]
